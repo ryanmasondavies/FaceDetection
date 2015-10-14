@@ -21,7 +21,7 @@ class VideoFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     let outputQueue = dispatch_queue_create("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL)
     
     let device: AVCaptureDevice? = {
-        let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as [AVCaptureDevice]
+        let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
         var camera: AVCaptureDevice? = nil
         for device in devices {
             if device.position == .Front {
@@ -42,25 +42,31 @@ class VideoFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     let videoDataOutput: AVCaptureVideoDataOutput = {
         let output = AVCaptureVideoDataOutput()
-        output.videoSettings = [ kCVPixelBufferPixelFormatTypeKey: kCMPixelFormat_32BGRA ]
+        output.videoSettings = [ kCVPixelBufferPixelFormatTypeKey: NSNumber(unsignedInt: kCMPixelFormat_32BGRA) ]
         output.alwaysDiscardsLateVideoFrames = true
         return output
     }()
     
-    func start(error: NSErrorPointer) -> Bool {
-        if configure(error) {
+    func start() throws {
+        var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
+        do {
+            try configure()
             session.startRunning()
-            return true
+            return
+        } catch let error1 as NSError {
+            error = error1
         }
-        return false
+        throw error
     }
     
     func stop() {
         session.stopRunning()
     }
     
-    private func configure(error: NSErrorPointer) -> Bool {
-        if let maybeInput: AnyObject = AVCaptureDeviceInput.deviceInputWithDevice(device!, error: error) {
+    private func configure() throws {
+        var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
+        do {
+            let maybeInput: AnyObject = try AVCaptureDeviceInput(device: device!)
             input = maybeInput as? AVCaptureDeviceInput
             if session.canAddInput(input) {
                 session.addInput(input)
@@ -69,17 +75,18 @@ class VideoFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
                     session.addOutput(videoDataOutput)
                     let connection = videoDataOutput.connectionWithMediaType(AVMediaTypeVideo)
                     connection.videoOrientation = AVCaptureVideoOrientation.Portrait
-                    return true
+                    return
                 } else {
-                    println("Video output error.");
+                    print("Video output error.");
                 }
             } else {
-                println("Video input error. Maybe unauthorised or no camera.")
+                print("Video input error. Maybe unauthorised or no camera.")
             }
-        } else {
-            println("Failed to start capturing video with error: \(error)")
+        } catch let error1 as NSError {
+            error = error1
+            print("Failed to start capturing video with error: \(error)")
         }
-        return false
+        throw error
     }
     
     func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
@@ -101,7 +108,7 @@ class FaceObscurationFilter {
     convenience init(sampleBuffer: CMSampleBuffer) {
         // Create a CIImage from the buffer
         let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-        let image = CIImage(CVPixelBuffer: imageBuffer)
+        let image = CIImage(CVPixelBuffer: imageBuffer!)
         
         self.init(inputImage: image)
     }
@@ -111,13 +118,13 @@ class FaceObscurationFilter {
         let detector = CIDetector(ofType: CIDetectorTypeFace, context:nil, options:nil)
         let features = detector.featuresInImage(inputImage)
         
-        println("Features: \(features)")
+        print("Features: \(features)")
         
         // Build a pixellated version of the image using the CIPixellate filter
-        let imageSize = inputImage.extent().size
+        let imageSize = inputImage.extent.size
         let pixellationOptions = [kCIInputScaleKey: max(imageSize.width, imageSize.height) / 10]
         let pixellation = CIFilter(name: "CIPixellate", withInputParameters: pixellationOptions)
-        let pixellatedImage = pixellation.outputImage
+        let pixellatedImage = pixellation!.outputImage
         
         // Build a masking image for each of the faces
         var maskImage: CIImage? = nil
@@ -137,15 +144,16 @@ class FaceObscurationFilter {
             
             // Create radial gradient circle at face position with face radius
             let radialGradient = CIFilter(name: "CIRadialGradient", withInputParameters: circleOptions)
-            let circleImage = radialGradient.outputImage
+            let circleImage = radialGradient!.outputImage
             
             if maskImage != nil {
                 // If the mask image is already set, create a composite of both the
                 // new circle image and the old so we're creating one image with all
                 // of the circles in it.
-                let options = [kCIInputImageKey: circleImage, kCIInputBackgroundImageKey: maskImage]
-                let composition = CIFilter(name: "CISourceOverCompositing", withInputParameters: options)
-                maskImage = composition.outputImage
+                let options = [kCIInputImageKey: circleImage!, kCIInputBackgroundImageKey: maskImage!]
+                if let composition = CIFilter(name: "CISourceOverCompositing", withInputParameters: options) {
+                    maskImage = composition.outputImage
+                }
             } else {
                 // If it's not set, remember it for composition next time.
                 maskImage = circleImage;
@@ -164,7 +172,7 @@ class FaceObscurationFilter {
         let blend = CIFilter(name: "CIBlendWithMask", withInputParameters: blendOptions)
         
         // Finally, set the resulting image as the output
-        outputImage = blend.outputImage
+        outputImage = blend!.outputImage
     }
 }
 
@@ -188,10 +196,11 @@ class ViewController: UIViewController, VideoFeedDelegate {
     }
     
     func startVideoFeed() {
-        var maybeError: NSError?
-        if (feed.start(&maybeError)) {
-            println("Video started.")
-        } else {
+        do {
+            try feed.start()
+            print("Video started.")
+        }
+        catch {
             // alert?
             // need to look into device permissions
         }
@@ -201,7 +210,7 @@ class ViewController: UIViewController, VideoFeedDelegate {
         let filter = FaceObscurationFilter(sampleBuffer: sampleBuffer)
         filter.process()
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.imageView.image = UIImage(CIImage: filter.outputImage)
+            self.imageView.image = UIImage(CIImage: filter.outputImage!)
         })
     }
 }
