@@ -3,7 +3,7 @@
 //  FaceDetectionTests
 //
 //  Created by Ryan Davies on 02/09/2014.
-//  Copyright (c) 2014 Ryan Davies. All rights reserved.
+//  Copyright (c) 2016 Ryan Davies. All rights reserved.
 //
 
 import UIKit
