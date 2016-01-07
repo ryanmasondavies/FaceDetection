@@ -153,6 +153,8 @@
 		944D02D919B5E52100324B81 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0720;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Ryan Davies";
 				TargetAttributes = {
@@ -395,6 +397,7 @@
 				944D02FF19B5E52100324B81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		944D030019B5E52100324B81 /* Build configuration list for PBXNativeTarget "FaceDetectionTests" */ = {
 			isa = XCConfigurationList;
@@ -403,6 +406,7 @@
 				944D030219B5E52100324B81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
