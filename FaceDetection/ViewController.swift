@@ -12,7 +12,7 @@ import AVFoundation
 
 class ViewController: UIViewController, VideoFeedDelegate {
     @IBOutlet weak var imageView: UIImageView!
-    let feed: VideoFeed = VideoFeed()
+    let feed = VideoFeed()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,8 +43,9 @@ class ViewController: UIViewController, VideoFeedDelegate {
     func videoFeed(videoFeed: VideoFeed, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer!) {
         let filter = FaceObscurationFilter(sampleBuffer: sampleBuffer)
         filter.process()
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.imageView.image = UIImage(CIImage: filter.outputImage!)
-        })
+        dispatch_async(dispatch_get_main_queue()) {
+            let image = filter.outputImage ?? filter.inputImage
+            self.imageView.image = UIImage(CIImage: image)
+        }
     }
 }

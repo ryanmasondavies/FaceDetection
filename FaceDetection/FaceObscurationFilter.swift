@@ -30,6 +30,12 @@ class FaceObscurationFilter {
         // Detect any faces in the image
         let detector = CIDetector(ofType: CIDetectorTypeFace, context:nil, options:nil)
         let features = detector.featuresInImage(inputImage)
+        guard features.count > 0 else {
+            // No features found.
+            // Nothing to pixellate - output image is the same as the input.
+            outputImage = inputImage
+            return
+        }
         
         print("Features: \(features)")
         
@@ -37,7 +43,9 @@ class FaceObscurationFilter {
         let imageSize = inputImage.extent.size
         let pixellationOptions = [kCIInputScaleKey: max(imageSize.width, imageSize.height) / 10]
         let pixellation = CIFilter(name: "CIPixellate", withInputParameters: pixellationOptions)
-        let pixellatedImage = pixellation!.outputImage!
+        guard let pixellatedImage = pixellation?.outputImage else {
+            return
+        }
         
         // Build a masking image for each of the faces
         var maskImage: CIImage? = nil
@@ -57,19 +65,24 @@ class FaceObscurationFilter {
             
             // Create radial gradient circle at face position with face radius
             let radialGradient = CIFilter(name: "CIRadialGradient", withInputParameters: circleOptions)
-            let circleImage = radialGradient!.outputImage!
-            
-            if maskImage != nil {
-                // If the mask image is already set, create a composite of both the
-                // new circle image and the old so we're creating one image with all
-                // of the circles in it.
-                let options: [String: AnyObject] = [kCIInputImageKey: circleImage, kCIInputBackgroundImageKey: maskImage!]
-                let composition = CIFilter(name: "CISourceOverCompositing", withInputParameters: options)!
-                maskImage = composition.outputImage
-            } else {
-                // If it's not set, remember it for composition next time.
-                maskImage = circleImage;
+            guard let circleImage = radialGradient?.outputImage else {
+                // Something went wrong.
+                // Try the next feature.
+                continue
             }
+            
+            guard let image = maskImage else {
+                // Mask image is not set - so remember it for composition next time.
+                maskImage = circleImage
+                continue
+            }
+            
+            // If the mask image is already set, create a composite of both the
+            // new circle image and the old so we're creating one image with all
+            // of the circles in it.
+            let options: [String: AnyObject] = [kCIInputImageKey: circleImage, kCIInputBackgroundImageKey: image]
+            let composition = CIFilter(name: "CISourceOverCompositing", withInputParameters: options)!
+            maskImage = composition.outputImage
         }
         
         // Create a single blended image made up of the pixellated image, the mask image, and the original image.
