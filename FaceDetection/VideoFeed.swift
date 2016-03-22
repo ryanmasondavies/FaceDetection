@@ -48,15 +48,8 @@ class VideoFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     }()
     
     func start() throws {
-        var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
-        do {
-            try configure()
-            session.startRunning()
-            return
-        } catch let error1 as NSError {
-            error = error1
-        }
-        throw error
+        try configure()
+        session.startRunning()
     }
     
     func stop() {
