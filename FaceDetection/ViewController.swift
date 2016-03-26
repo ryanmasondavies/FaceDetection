@@ -10,12 +10,12 @@ import UIKit
 import CoreImage
 import AVFoundation
 
-class ViewController: UIViewController, VideoFeedDelegate {
+class ViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     let feed = VideoFeed()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         feed.delegate = self
     }
     
@@ -39,7 +39,9 @@ class ViewController: UIViewController, VideoFeedDelegate {
             // need to look into device permissions
         }
     }
-    
+}
+
+extension ViewController : VideoFeedDelegate {
     func videoFeed(videoFeed: VideoFeed, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer!) {
         let filter = FaceObscurationFilter(sampleBuffer: sampleBuffer)
         filter.process()
