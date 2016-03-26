@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		944D02E719B5E52100324B81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944D02E619B5E52100324B81 /* AppDelegate.swift */; };
-		944D02E919B5E52100324B81 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944D02E819B5E52100324B81 /* ViewController.swift */; };
+		944D02E919B5E52100324B81 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944D02E819B5E52100324B81 /* FeedViewController.swift */; };
 		944D02EC19B5E52100324B81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 944D02EA19B5E52100324B81 /* Main.storyboard */; };
 		944D02EE19B5E52100324B81 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 944D02ED19B5E52100324B81 /* Images.xcassets */; };
 		944D02FA19B5E52100324B81 /* FaceDetectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944D02F919B5E52100324B81 /* FaceDetectionTests.swift */; };
@@ -30,12 +30,13 @@
 		944D02E119B5E52100324B81 /* FaceDetection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceDetection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		944D02E519B5E52100324B81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		944D02E619B5E52100324B81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		944D02E819B5E52100324B81 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		944D02E819B5E52100324B81 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		944D02EB19B5E52100324B81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		944D02ED19B5E52100324B81 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		944D02F319B5E52100324B81 /* FaceDetectionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FaceDetectionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		944D02F819B5E52100324B81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		944D02F919B5E52100324B81 /* FaceDetectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionTests.swift; sourceTree = "<group>"; };
+		94C9E1F91CA72A3300B49860 /* PixellateImage.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PixellateImage.playground; sourceTree = "<group>"; };
 		94F494F91C3DE3D8008D88DF /* VideoFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoFeed.swift; sourceTree = "<group>"; };
 		94F494FB1C3DE41A008D88DF /* FaceObscurationFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceObscurationFilter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -64,6 +65,7 @@
 				944D02E319B5E52100324B81 /* FaceDetection */,
 				944D02F619B5E52100324B81 /* FaceDetectionTests */,
 				944D02E219B5E52100324B81 /* Products */,
+				94C9E1F91CA72A3300B49860 /* PixellateImage.playground */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,7 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				944D02E619B5E52100324B81 /* AppDelegate.swift */,
-				944D02E819B5E52100324B81 /* ViewController.swift */,
+				944D02E819B5E52100324B81 /* FeedViewController.swift */,
 				94F494F91C3DE3D8008D88DF /* VideoFeed.swift */,
 				94F494FB1C3DE41A008D88DF /* FaceObscurationFilter.swift */,
 				944D02EA19B5E52100324B81 /* Main.storyboard */,
@@ -217,7 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				94F494FC1C3DE41A008D88DF /* FaceObscurationFilter.swift in Sources */,
-				944D02E919B5E52100324B81 /* ViewController.swift in Sources */,
+				944D02E919B5E52100324B81 /* FeedViewController.swift in Sources */,
 				944D02E719B5E52100324B81 /* AppDelegate.swift in Sources */,
 				94F494FA1C3DE3D8008D88DF /* VideoFeed.swift in Sources */,
 			);
