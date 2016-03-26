@@ -1,5 +1,5 @@
 //
-//  VideoFeed.swift
+//  CaptureSessionController.swift
 //  FaceDetection
 //
 //  Created by Ryan Davies on 07/01/2016.
@@ -10,11 +10,11 @@ import Foundation
 import CoreImage
 import AVFoundation
 
-protocol VideoFeedDelegate {
-    func videoFeed(videoFeed: VideoFeed, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer!)
+protocol CaptureSessionControllerDelegate {
+    func captureSessionController(captureSessionController: CaptureSessionController, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer!)
 }
 
-class VideoFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+class CaptureSessionController: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     // create a serial dispatch queue used for the sample buffer delegate as well as when a still image is captured
     // a serial dispatch queue must be used to guarantee that video frames will be delivered in order
     // see the header doc for setSampleBufferDelegate:queue: for more information
@@ -32,7 +32,7 @@ class VideoFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     }()
     
     var input: AVCaptureDeviceInput? = nil
-    var delegate: VideoFeedDelegate? = nil
+    var delegate: CaptureSessionControllerDelegate? = nil
     
     let session: AVCaptureSession = {
         let session = AVCaptureSession()
@@ -85,7 +85,7 @@ class VideoFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
         // Update the delegate
         if delegate != nil {
-            delegate!.videoFeed(self, didUpdateWithSampleBuffer: sampleBuffer)
+            delegate!.captureSessionController(self, didUpdateWithSampleBuffer: sampleBuffer)
         }
     }
 }

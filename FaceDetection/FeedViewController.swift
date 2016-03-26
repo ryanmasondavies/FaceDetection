@@ -11,7 +11,7 @@ import CoreImage
 import AVFoundation
 
 class FeedViewController: UIViewController {
-    let feed = VideoFeed()
+    let feed = CaptureSessionController()
     
     var imageView: UIImageView {
         get {
@@ -50,8 +50,8 @@ class FeedViewController: UIViewController {
     }
 }
 
-extension FeedViewController : VideoFeedDelegate {
-    func videoFeed(videoFeed: VideoFeed, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer!) {
+extension FeedViewController : CaptureSessionControllerDelegate {
+    func captureSessionController(captureSessionController: CaptureSessionController, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer!) {
         let filter = FaceObscurationFilter(sampleBuffer: sampleBuffer)
         filter.process()
         dispatch_async(dispatch_get_main_queue()) {
