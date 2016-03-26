@@ -11,7 +11,11 @@ import CoreImage
 import AVFoundation
 
 class FeedViewController: UIViewController {
-    let feed = CaptureSessionController()
+    lazy var captureSessionController: CaptureSessionController = {
+        let controller = CaptureSessionController()
+        controller.delegate = self
+        return controller
+    }()
     
     var imageView: UIImageView {
         get {
@@ -23,35 +27,31 @@ class FeedViewController: UIViewController {
         self.view = UIImageView()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        feed.delegate = self
-    }
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        startVideoFeed()
+        captureSessionController.startCaptureSession()
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        feed.stop()
-    }
-    
-    func startVideoFeed() {
-        do {
-            try feed.start()
-            print("Video started.")
-            return
-        } catch {
-            // alert?
-            // need to look into device permissions
-        }
+        captureSessionController.stopCaptureSession()
     }
 }
 
 extension FeedViewController : CaptureSessionControllerDelegate {
-    func captureSessionController(captureSessionController: CaptureSessionController, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer!) {
+    func captureSessionController(captureSessionController: CaptureSessionController, didStartRunningCaptureSession captureSession: AVCaptureSession) {
+        print("Capture session started.")
+    }
+    
+    func captureSessionController(captureSessionController: CaptureSessionController, didStopRunningCaptureSession captureSession: AVCaptureSession) {
+        print("Capture session stopped.")
+    }
+    
+    func captureSessionController(captureSessionController: CaptureSessionController, didFailWithError error: ErrorType) {
+        print("Failed with error: \(error)")
+    }
+    
+    func captureSessionController(captureSessionController: CaptureSessionController, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer) {
         let filter = FaceObscurationFilter(sampleBuffer: sampleBuffer)
         filter.process()
         dispatch_async(dispatch_get_main_queue()) {
