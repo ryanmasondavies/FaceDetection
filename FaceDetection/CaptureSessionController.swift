@@ -14,7 +14,7 @@ protocol CaptureSessionControllerDelegate {
     func captureSessionController(captureSessionController: CaptureSessionController, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer!)
 }
 
-class CaptureSessionController: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
+class CaptureSessionController: NSObject {
     // create a serial dispatch queue used for the sample buffer delegate as well as when a still image is captured
     // a serial dispatch queue must be used to guarantee that video frames will be delivered in order
     // see the header doc for setSampleBufferDelegate:queue: for more information
@@ -81,7 +81,9 @@ class CaptureSessionController: NSObject, AVCaptureVideoDataOutputSampleBufferDe
         }
         throw error
     }
-    
+}
+
+extension CaptureSessionController : AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
         // Update the delegate
         if delegate != nil {
