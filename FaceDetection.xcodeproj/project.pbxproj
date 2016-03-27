@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9425E0AE1CA88FBF004B49BB /* CoreImageAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9425E0AD1CA88FBF004B49BB /* CoreImageAdditions.swift */; };
 		944D02E719B5E52100324B81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944D02E619B5E52100324B81 /* AppDelegate.swift */; };
 		944D02E919B5E52100324B81 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944D02E819B5E52100324B81 /* FeedViewController.swift */; };
 		944D02EC19B5E52100324B81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 944D02EA19B5E52100324B81 /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9425E0AD1CA88FBF004B49BB /* CoreImageAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreImageAdditions.swift; sourceTree = "<group>"; };
 		944D02E119B5E52100324B81 /* FaceDetection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceDetection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		944D02E519B5E52100324B81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		944D02E619B5E52100324B81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				944D02E619B5E52100324B81 /* AppDelegate.swift */,
 				944D02E819B5E52100324B81 /* FeedViewController.swift */,
 				94F494F91C3DE3D8008D88DF /* CaptureSessionController.swift */,
+				9425E0AD1CA88FBF004B49BB /* CoreImageAdditions.swift */,
 				94F494FB1C3DE41A008D88DF /* FaceObscurationFilter.swift */,
 				944D02EA19B5E52100324B81 /* Main.storyboard */,
 				944D02ED19B5E52100324B81 /* Images.xcassets */,
@@ -221,6 +224,7 @@
 				94F494FC1C3DE41A008D88DF /* FaceObscurationFilter.swift in Sources */,
 				944D02E919B5E52100324B81 /* FeedViewController.swift in Sources */,
 				944D02E719B5E52100324B81 /* AppDelegate.swift in Sources */,
+				9425E0AE1CA88FBF004B49BB /* CoreImageAdditions.swift in Sources */,
 				94F494FA1C3DE3D8008D88DF /* CaptureSessionController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

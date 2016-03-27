@@ -10,23 +10,6 @@ import Foundation
 import AVFoundation
 import CoreImage
 
-extension CMSampleBuffer {
-    var imageBuffer: CVImageBuffer? {
-        get {
-            return CMSampleBufferGetImageBuffer(self)
-        }
-    }
-}
-
-extension CIImage {
-    convenience init?(CMSampleBuffer sampleBuffer: CMSampleBuffer) {
-        guard let imageBuffer = sampleBuffer.imageBuffer else {
-            return nil
-        }
-        self.init(CVPixelBuffer: imageBuffer)
-    }
-}
-
 protocol Filter {
     var inputImage: CIImage { get }
     var outputImage: CIImage? { get }
