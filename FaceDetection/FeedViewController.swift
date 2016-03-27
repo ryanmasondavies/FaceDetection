@@ -52,11 +52,13 @@ extension FeedViewController : CaptureSessionControllerDelegate {
     }
     
     func captureSessionController(captureSessionController: CaptureSessionController, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer) {
-        let filter = FaceObscurationFilter(sampleBuffer: sampleBuffer)
-        filter.process()
-        dispatch_async(dispatch_get_main_queue()) {
-            let image = filter.outputImage ?? filter.inputImage
-            self.imageView.image = UIImage(CIImage: image)
+//        let filter = FaceObscurationFilter()
+        if let image = CIImage(CMSampleBuffer: sampleBuffer) {
+            let filter = PixellationFilter(inputImage: image)
+            dispatch_async(dispatch_get_main_queue()) {
+                let image = filter.outputImage ?? filter.inputImage
+                self.imageView.image = UIImage(CIImage: image)
+            }
         }
     }
 }

@@ -10,41 +10,93 @@ import Foundation
 import AVFoundation
 import CoreImage
 
-class FaceObscurationFilter {
+extension CMSampleBuffer {
+    var imageBuffer: CVImageBuffer? {
+        get {
+            return CMSampleBufferGetImageBuffer(self)
+        }
+    }
+}
+
+extension CIImage {
+    convenience init?(CMSampleBuffer sampleBuffer: CMSampleBuffer) {
+        guard let imageBuffer = sampleBuffer.imageBuffer else {
+            return nil
+        }
+        self.init(CVPixelBuffer: imageBuffer)
+    }
+}
+
+protocol Filter {
+    var inputImage: CIImage { get }
+    var outputImage: CIImage? { get }
+    
+    init(inputImage: CIImage)
+}
+
+struct PixellationFilter : Filter {
     let inputImage: CIImage
-    var outputImage: CIImage? = nil
+    var inputFactor: CGFloat
+    var inputCenter: CIVector
+
+    init(inputImage: CIImage) {
+        self.inputImage = inputImage
+        self.inputFactor = 20
+        
+        let inputImageSize = inputImage.extent.size
+        self.inputCenter = CIVector(
+            x: inputImageSize.width / 2,
+            y: inputImageSize.height / 2
+        )
+    }
+    
+    var outputImage: CIImage? {
+        let inputImageSize = inputImage.extent.size
+        let inputScale = max(inputImageSize.width, inputImageSize.height) / inputFactor
+        return inputImage.imageByApplyingFilter(
+            "CIPixellate",
+            withInputParameters: [
+                kCIInputScaleKey: inputScale,
+                kCIInputCenterKey: inputCenter
+            ]
+        )
+    }
+}
+
+class FaceObscurationFilter : CIFilter {
+    let inputImage: CIImage
     
     init(inputImage: CIImage) {
         self.inputImage = inputImage
+        super.init()
     }
     
-    convenience init(sampleBuffer: CMSampleBuffer) {
-        // Create a CIImage from the buffer
-        let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-        let image = CIImage(CVPixelBuffer: imageBuffer!)
-        
-        self.init(inputImage: image)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    func process() {
+    override var outputImage: CIImage? {
         // Detect any faces in the image
         let detector = CIDetector(ofType: CIDetectorTypeFace, context:nil, options:nil)
         let features = detector.featuresInImage(inputImage)
         guard features.count > 0 else {
-            // No features found.
-            // Nothing to pixellate - output image is the same as the input.
-            outputImage = inputImage
-            return
+            // No features found
+            // Nothing to pixellate - output image is the same as the input
+            return inputImage
         }
         
         print("Features: \(features)")
         
         // Build a pixellated version of the image using the CIPixellate filter
         let imageSize = inputImage.extent.size
-        let pixellationOptions = [kCIInputScaleKey: max(imageSize.width, imageSize.height) / 10]
+        let pixellationOptions = [
+            kCIInputScaleKey: max(imageSize.width, imageSize.height) / 10,
+            kCIInputCenterKey: CIVector(x: imageSize.width / 2, y: imageSize.height / 2)
+        ]
         let pixellation = CIFilter(name: "CIPixellate", withInputParameters: pixellationOptions)
         guard let pixellatedImage = pixellation?.outputImage else {
-            return
+            // Failed to pixellate
+            return nil
         }
         
         // Build a masking image for each of the faces
@@ -95,9 +147,20 @@ class FaceObscurationFilter {
         blendOptions[kCIInputBackgroundImageKey] = inputImage
         blendOptions[kCIInputMaskImageKey] = maskImage
         
-        if let blend = CIFilter(name: "CIBlendWithMask", withInputParameters: blendOptions) {
-            // Finally, set the resulting image as the output
-            outputImage = blend.outputImage
+        guard let blend = CIFilter(name: "CIBlendWithMask", withInputParameters: blendOptions) else {
+            return nil
         }
+        
+        // Finally, set the resulting image as the output
+        return blend.outputImage
+    }
+}
+
+extension FaceObscurationFilter {
+    convenience init?(CMSampleBuffer sampleBuffer: CMSampleBuffer) {
+        guard let image = CIImage(CMSampleBuffer: sampleBuffer) else {
+            return nil
+        }
+        self.init(inputImage: image)
     }
 }
