@@ -52,9 +52,7 @@ extension FeedViewController : CaptureSessionControllerDelegate {
     }
     
     func captureSessionController(captureSessionController: CaptureSessionController, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer) {
-//        let filter = FaceObscurationFilter()
-        if let image = CIImage(CMSampleBuffer: sampleBuffer) {
-            let filter = PixellationFilter(inputImage: image)
+        if let filter = PixellationFilter(CMSampleBuffer: sampleBuffer) {
             dispatch_async(dispatch_get_main_queue()) {
                 let image = filter.outputImage ?? filter.inputImage
                 self.imageView.image = UIImage(CIImage: image)

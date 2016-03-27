@@ -7,44 +7,7 @@
 //
 
 import Foundation
-import AVFoundation
 import CoreImage
-
-protocol Filter {
-    var inputImage: CIImage { get }
-    var outputImage: CIImage? { get }
-    
-    init(inputImage: CIImage)
-}
-
-struct PixellationFilter : Filter {
-    let inputImage: CIImage
-    var inputFactor: CGFloat
-    var inputCenter: CIVector
-
-    init(inputImage: CIImage) {
-        self.inputImage = inputImage
-        self.inputFactor = 20
-        
-        let inputImageSize = inputImage.extent.size
-        self.inputCenter = CIVector(
-            x: inputImageSize.width / 2,
-            y: inputImageSize.height / 2
-        )
-    }
-    
-    var outputImage: CIImage? {
-        let inputImageSize = inputImage.extent.size
-        let inputScale = max(inputImageSize.width, inputImageSize.height) / inputFactor
-        return inputImage.imageByApplyingFilter(
-            "CIPixellate",
-            withInputParameters: [
-                kCIInputScaleKey: inputScale,
-                kCIInputCenterKey: inputCenter
-            ]
-        )
-    }
-}
 
 class FaceObscurationFilter : CIFilter {
     let inputImage: CIImage
@@ -136,14 +99,5 @@ class FaceObscurationFilter : CIFilter {
         
         // Finally, set the resulting image as the output
         return blend.outputImage
-    }
-}
-
-extension FaceObscurationFilter {
-    convenience init?(CMSampleBuffer sampleBuffer: CMSampleBuffer) {
-        guard let image = CIImage(CMSampleBuffer: sampleBuffer) else {
-            return nil
-        }
-        self.init(inputImage: image)
     }
 }
