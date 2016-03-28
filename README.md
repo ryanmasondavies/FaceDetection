@@ -2,6 +2,7 @@ Face Detection
 ==============
 
 _Note: this example requires Xcode 6 beta 6 and iOS 7 or later._
+**_UPDATE: this example has been updated to work with Swift 2.3 and Xcode 7.3_**
 
 Sample project for detecting faces from a live camera feed using Swift and Core Image API's.
 

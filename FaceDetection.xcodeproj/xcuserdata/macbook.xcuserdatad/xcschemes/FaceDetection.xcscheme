@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0720"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -17,20 +17,6 @@
                BlueprintIdentifier = "944D02E019B5E52100324B81"
                BuildableName = "FaceDetection.app"
                BlueprintName = "FaceDetection"
-               ReferencedContainer = "container:FaceDetection.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "944D02F219B5E52100324B81"
-               BuildableName = "FaceDetectionTests.xctest"
-               BlueprintName = "FaceDetectionTests"
                ReferencedContainer = "container:FaceDetection.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
