@@ -34,13 +34,7 @@ class FaceObscurationFilter : CIFilter {
         print("Features: \(features)")
         
         // Build a pixellated version of the image using the CIPixellate filter
-        let imageSize = inputImage.extent.size
-        let pixellationOptions = [
-            kCIInputScaleKey: max(imageSize.width, imageSize.height) / 10,
-            kCIInputCenterKey: CIVector(x: imageSize.width / 2, y: imageSize.height / 2)
-        ]
-        let pixellation = CIFilter(name: "CIPixellate", withInputParameters: pixellationOptions)
-        guard let pixellatedImage = pixellation?.outputImage else {
+        guard let pixellatedImage = PixellationFilter(inputImage: inputImage).outputImage else {
             // Failed to pixellate
             return nil
         }
