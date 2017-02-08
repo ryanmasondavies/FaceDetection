@@ -27,35 +27,35 @@ class FeedViewController: UIViewController {
         self.view = UIImageView()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         captureSessionController.startCaptureSession()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         captureSessionController.stopCaptureSession()
     }
 }
 
 extension FeedViewController : CaptureSessionControllerDelegate {
-    func captureSessionController(captureSessionController: CaptureSessionController, didStartRunningCaptureSession captureSession: AVCaptureSession) {
+    func captureSessionController(_ captureSessionController: CaptureSessionController, didStartRunningCaptureSession captureSession: AVCaptureSession) {
         print("Capture session started.")
     }
     
-    func captureSessionController(captureSessionController: CaptureSessionController, didStopRunningCaptureSession captureSession: AVCaptureSession) {
+    func captureSessionController(_ captureSessionController: CaptureSessionController, didStopRunningCaptureSession captureSession: AVCaptureSession) {
         print("Capture session stopped.")
     }
     
-    func captureSessionController(captureSessionController: CaptureSessionController, didFailWithError error: ErrorType) {
+    func captureSessionController(_ captureSessionController: CaptureSessionController, didFailWithError error: Error) {
         print("Failed with error: \(error)")
     }
     
-    func captureSessionController(captureSessionController: CaptureSessionController, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer) {
+    func captureSessionController(_ captureSessionController: CaptureSessionController, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer) {
         if let filter = PixellationFilter(CMSampleBuffer: sampleBuffer) {
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 let image = filter.outputImage ?? filter.inputImage
-                self.imageView.image = UIImage(CIImage: image)
+                self.imageView.image = UIImage(ciImage: image)
             }
         }
     }

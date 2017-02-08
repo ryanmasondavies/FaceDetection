@@ -24,8 +24,8 @@ class FaceObscurationFilter : CIFilter {
     override var outputImage: CIImage? {
         // Detect any faces in the image
         let detector = CIDetector(ofType: CIDetectorTypeFace, context:nil, options:nil)
-        let features = detector.featuresInImage(inputImage)
-        guard features.count > 0 else {
+        let features = detector?.features(in: inputImage)
+        guard (features?.count)! > 0 else {
             // No features found
             // Nothing to pixellate - output image is the same as the input
             return inputImage
@@ -41,7 +41,7 @@ class FaceObscurationFilter : CIFilter {
         
         // Build a masking image for each of the faces
         var maskImage: CIImage? = nil
-        for feature in features {
+        for feature in features! {
             // Get feature position and radius for circle
             let xCenter = feature.bounds.origin.x + feature.bounds.size.width / 2.0
             let yCenter = feature.bounds.origin.y + feature.bounds.size.height / 2.0
@@ -49,8 +49,8 @@ class FaceObscurationFilter : CIFilter {
             
             // Input parameters for the circle filter
             var circleOptions: [String: AnyObject] = [:]
-            circleOptions["inputRadius0"] = radius
-            circleOptions["inputRadius1"] = radius + 1
+            circleOptions["inputRadius0"] = radius as AnyObject?
+            circleOptions["inputRadius1"] = (radius + 1) as AnyObject
             circleOptions["inputColor0"] = CIColor(red: 0, green: 1, blue: 0, alpha: 1)
             circleOptions["inputColor1"] = CIColor(red: 0, green: 0, blue: 0, alpha: 1)
             circleOptions[kCIInputCenterKey] = CIVector(x: xCenter, y: yCenter)

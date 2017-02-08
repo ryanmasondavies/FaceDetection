@@ -22,7 +22,7 @@ extension CIImage {
         guard let imageBuffer = sampleBuffer.imageBuffer else {
             return nil
         }
-        self.init(CVPixelBuffer: imageBuffer)
+        self.init(cvPixelBuffer: imageBuffer)
     }
 }
 

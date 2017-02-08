@@ -28,7 +28,7 @@ struct PixellationFilter : Filter {
     var outputImage: CIImage? {
         let inputImageSize = inputImage.extent.size
         let inputScale = max(inputImageSize.width, inputImageSize.height) / inputFactor
-        return inputImage.imageByApplyingFilter(
+        return inputImage.applyingFilter(
             "CIPixellate",
             withInputParameters: [
                 kCIInputScaleKey: inputScale,

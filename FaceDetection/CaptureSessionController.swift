@@ -15,50 +15,50 @@ private let SampleBufferQueueLabel = "com.ryandavies.camera.sample_buffer"
 
 protocol CaptureSessionControllerDelegate {
     func captureSessionController(
-        captureSessionController: CaptureSessionController,
+        _ captureSessionController: CaptureSessionController,
         didStartRunningCaptureSession captureSession: AVCaptureSession
     )
     
     func captureSessionController(
-        captureSessionController: CaptureSessionController,
+        _ captureSessionController: CaptureSessionController,
         didStopRunningCaptureSession captureSession: AVCaptureSession
     )
     
     func captureSessionController(
-        captureSessionController: CaptureSessionController,
+        _ captureSessionController: CaptureSessionController,
         didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer
     )
     
     func captureSessionController(
-        captureSessionController: CaptureSessionController,
-        didFailWithError error: ErrorType
+        _ captureSessionController: CaptureSessionController,
+        didFailWithError error: Error
     )
 }
 
 class CaptureSessionController: NSObject {
     // Use this queue for asynchronous calls to the capture session.
-    private let sessionQueue = dispatch_queue_create(SessionQueueLabel, DISPATCH_QUEUE_SERIAL)
+    fileprivate let sessionQueue = DispatchQueue(label: SessionQueueLabel, attributes: [])
     
     // create a serial dispatch queue used for the sample buffer delegate as well as when a still image is captured
     // a serial dispatch queue must be used to guarantee that video frames will be delivered in order
     // see the header doc for setSampleBufferDelegate:queue: for more information
-    private let outputQueue = dispatch_queue_create(SampleBufferQueueLabel, DISPATCH_QUEUE_SERIAL)
+    fileprivate let outputQueue = DispatchQueue(label: SampleBufferQueueLabel, attributes: [])
     
     // Domain name for errors.
     static let errorDomain = "com.ryandavies.CaptureSessionController.ErrorDomain"
     
     // Possible error types.
-    enum Error : ErrorType {
-        case FailedToAddInput
-        case FailedToAddOutput
-        case FailedToSetVideoOrientation
+    enum Error : Swift.Error {
+        case failedToAddInput
+        case failedToAddOutput
+        case failedToSetVideoOrientation
     }
     
     let device: AVCaptureDevice? = {
-        let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
+        let devices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo) as! [AVCaptureDevice]
         var camera: AVCaptureDevice? = nil
         for device in devices {
-            if device.position == .Front {
+            if device.position == .front {
                 camera = device
             }
         }
@@ -76,12 +76,12 @@ class CaptureSessionController: NSObject {
     
     let videoDataOutput: AVCaptureVideoDataOutput = {
         let output = AVCaptureVideoDataOutput()
-        output.videoSettings = [ kCVPixelBufferPixelFormatTypeKey: Int(kCMPixelFormat_32BGRA) ]
+        output.videoSettings = [ kCVPixelBufferPixelFormatTypeKey as AnyHashable: Int(kCMPixelFormat_32BGRA) ]
         output.alwaysDiscardsLateVideoFrames = true
         return output
     }()
     
-    private(set) var isSessionRunning = false {
+    fileprivate(set) var isSessionRunning = false {
         didSet {
             switch isSessionRunning {
             case true: self.delegate?.captureSessionController(self, didStartRunningCaptureSession: captureSession)
@@ -90,17 +90,17 @@ class CaptureSessionController: NSObject {
         }
     }
     
-    private var isSessionConfigured = false
+    fileprivate var isSessionConfigured = false
     
     func startCaptureSession() {
         if isSessionRunning { return }
         
-        dispatch_async(sessionQueue) { [weak self] in
+        sessionQueue.async { [weak self] in
             // Do nothing if self has been deallocated.
             guard self != nil else { return }
             
             // Configure the capture session if it has not yet been configured.
-            if let controller = self where !controller.isSessionConfigured {
+            if let controller = self, !controller.isSessionConfigured {
                 do {
                     try controller.configureCaptureSession()
                 }
@@ -118,16 +118,16 @@ class CaptureSessionController: NSObject {
     func stopCaptureSession() {
         if !isSessionRunning { return }
         
-        dispatch_async(sessionQueue) { [weak self] in
+        sessionQueue.async { [weak self] in
             guard self != nil else { return }
             self?.captureSession.stopRunning()
             self?.isSessionRunning = false
         }
     }
     
-    private func configureCaptureSession() throws {
+    fileprivate func configureCaptureSession() throws {
         // Grab the input for this device.
-        guard let input: AVCaptureDeviceInput = try AVCaptureDeviceInput(device: device) else { return }
+        let input = try AVCaptureDeviceInput(device: device)
         
         // Assign our input, to remember it for future use.
         self.input = input
@@ -140,21 +140,21 @@ class CaptureSessionController: NSObject {
         
         // Add input if possible.
         guard captureSession.canAddInput(input) == true else {
-            throw Error.FailedToAddInput
+            throw Error.failedToAddInput
         }
         captureSession.addInput(input)
         
         // Add the video data output to the capture session if possible
         guard captureSession.canAddOutput(videoDataOutput) == true else {
-            throw Error.FailedToAddOutput
+            throw Error.failedToAddOutput
         }
         captureSession.addOutput(videoDataOutput)
         
         // Assign a device orientation to the video data output.
-        guard let connection = videoDataOutput.connectionWithMediaType(AVMediaTypeVideo) else {
-            throw Error.FailedToSetVideoOrientation
+        guard let connection = videoDataOutput.connection(withMediaType: AVMediaTypeVideo) else {
+            throw Error.failedToSetVideoOrientation
         }
-        connection.videoOrientation = AVCaptureVideoOrientation.Portrait
+        connection.videoOrientation = AVCaptureVideoOrientation.portrait
         
         // Finish configuring the session.
         captureSession.commitConfiguration()
@@ -166,9 +166,9 @@ class CaptureSessionController: NSObject {
 
 extension CaptureSessionController : AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(
-        captureOutput: AVCaptureOutput!,
+        _ captureOutput: AVCaptureOutput!,
         didOutputSampleBuffer sampleBuffer: CMSampleBuffer!,
-        fromConnection connection: AVCaptureConnection!
+        from connection: AVCaptureConnection!
         ) {
             delegate?.captureSessionController(self, didUpdateWithSampleBuffer: sampleBuffer)
     }
