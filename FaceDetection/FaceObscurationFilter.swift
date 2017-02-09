@@ -61,7 +61,7 @@ class FaceObscurationFilter: Filter {
             var circleOptions: [String: AnyObject] = [:]
             circleOptions["inputRadius0"] = radius as AnyObject?
             circleOptions["inputRadius1"] = (radius + 1) as AnyObject
-            circleOptions["inputColor0"] = CIColor(red: 0, green: 1, blue: 0, alpha: 1)
+            circleOptions["inputColor0"] = CIColor(red: 1, green: 1, blue: 1, alpha: 1)
             circleOptions["inputColor1"] = CIColor(red: 0, green: 0, blue: 0, alpha: 1)
             circleOptions[kCIInputCenterKey] = CIVector(x: xCenter, y: yCenter)
             
