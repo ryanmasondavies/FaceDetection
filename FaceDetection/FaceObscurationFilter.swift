@@ -9,19 +9,14 @@
 import Foundation
 import CoreImage
 
-class FaceObscurationFilter : CIFilter {
+class FaceObscurationFilter: Filter {
     let inputImage: CIImage
     
-    init(inputImage: CIImage) {
+    required init(inputImage: CIImage) {
         self.inputImage = inputImage
-        super.init()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override var outputImage: CIImage? {
+    var outputImage: CIImage? {
         // Detect any faces in the image
         let detector = CIDetector(ofType: CIDetectorTypeFace, context:nil, options:nil)
         let features = detector?.features(in: inputImage)
