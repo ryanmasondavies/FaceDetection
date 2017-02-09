@@ -50,7 +50,7 @@ class FaceObscurationFilter: Filter {
         }
         
         // Build a masking image for each of the faces
-        var maskImage: CIImage? = nil
+        var maskImage: CIImage?
         for feature in features {
             // Get feature position and radius for circle
             let xCenter = feature.bounds.origin.x + feature.bounds.size.width / 2.0
@@ -73,16 +73,18 @@ class FaceObscurationFilter: Filter {
                 continue
             }
             
-            guard let image = maskImage else {
-                // Mask image is not set - so remember it for composition next time.
+            if maskImage == nil {
                 maskImage = circleImage
+            }
+            
+            guard let lastMaskImage = maskImage else {
                 continue
             }
             
             // If the mask image is already set, create a composite of both the
             // new circle image and the old so we're creating one image with all
             // of the circles in it.
-            let options: [String: AnyObject] = [kCIInputImageKey: circleImage, kCIInputBackgroundImageKey: image]
+            let options: [String: AnyObject] = [kCIInputImageKey: circleImage, kCIInputBackgroundImageKey: lastMaskImage]
             let composition = CIFilter(name: "CISourceOverCompositing", withInputParameters: options)!
             maskImage = composition.outputImage
         }
