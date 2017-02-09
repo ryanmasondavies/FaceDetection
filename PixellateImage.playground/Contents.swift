@@ -3,14 +3,14 @@ import CoreImage
 
 func pixellate(image image: CIImage) -> CIImage? {
     let imageSize = image.extent.size
-    let options = [
+    let options: [String: Any] = [
         kCIInputCenterKey: CIVector(x: imageSize.width / 2, y: imageSize.height / 2),
         kCIInputScaleKey: max(imageSize.width, imageSize.height) / 20,
     ]
-    return image.imageByApplyingFilter("CIPixellate", withInputParameters: options)
+    return image.applyingFilter("CIPixellate", withInputParameters: options)
 }
 
-let monaLisaURL = NSBundle.mainBundle().URLForResource("monalisa", withExtension: "jpg")
-let monaLisa = CIImage(contentsOfURL: monaLisaURL!)
+let monaLisaURL = Bundle.main.url(forResource: "monalisa", withExtension: "jpg")
+let monaLisa = CIImage(contentsOf: monaLisaURL!)
 
 pixellate(image: monaLisa!)
