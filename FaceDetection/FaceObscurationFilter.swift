@@ -26,9 +26,16 @@ class FaceObscurationFilter: Filter {
         }
         
         // Detect any faces in the image
-        let detector = CIDetector(ofType: CIDetectorTypeFace, context:nil, options:nil)
-        let features = detector?.features(in: inputImage)
-        guard (features?.count)! > 0 else {
+        let detector = CIDetector(ofType: CIDetectorTypeFace,
+                                  context: nil,
+                                  options: nil)
+        
+        guard let features = detector?.features(in: inputImage) else {
+            print("Failed to read features from detector.")
+            return inputImage
+        }
+        
+        guard features.isEmpty == false else {
             // No features found
             // Nothing to pixellate - output image is the same as the input
             return inputImage
@@ -44,7 +51,7 @@ class FaceObscurationFilter: Filter {
         
         // Build a masking image for each of the faces
         var maskImage: CIImage? = nil
-        for feature in features! {
+        for feature in features {
             // Get feature position and radius for circle
             let xCenter = feature.bounds.origin.x + feature.bounds.size.width / 2.0
             let yCenter = feature.bounds.origin.y + feature.bounds.size.height / 2.0
