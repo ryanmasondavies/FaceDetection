@@ -17,6 +17,14 @@ class FaceObscurationFilter: Filter {
     }
     
     var outputImage: CIImage? {
+        let startTime = Date()
+        
+        defer {
+            let endTime = Date()
+            let timeDelta = endTime.timeIntervalSince1970 - startTime.timeIntervalSince1970
+            print("Created output image in \(timeDelta) seconds.")
+        }
+        
         // Detect any faces in the image
         let detector = CIDetector(ofType: CIDetectorTypeFace, context:nil, options:nil)
         let features = detector?.features(in: inputImage)
