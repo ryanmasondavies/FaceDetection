@@ -3,7 +3,7 @@ Face Detection
 
 [![Build Status](https://travis-ci.org/iotize/FaceDetection.svg?branch=master)](https://travis-ci.org/iotize/FaceDetection)
 
-_Note: this example requires Xcode 6 beta 6 and iOS 7 or later._
+_Note: this example requires Xcode 7 and iOS 7 or later._
 
 Sample project for detecting faces from a live camera feed using Swift and Core Image API's.
 
