@@ -3,4 +3,4 @@ osx_image: xcode9.3
 xcode_project: FaceDetection.xcodeproj
 xcode_scheme: FaceDetection
 script:
-    - xcodebuild clean build -sdk iphonesimulator -project FaceDetection.xcworkspace -scheme FaceDetection CODE_SIGNING_REQUIRED=NO
+    - xcodebuild clean build -sdk iphonesimulator -project FaceDetection.xcodeproj -scheme FaceDetection CODE_SIGNING_REQUIRED=NO
