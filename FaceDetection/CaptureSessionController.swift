@@ -10,8 +10,8 @@ import Foundation
 import CoreImage
 import AVFoundation
 
-private let SessionQueueLabel = "com.ryandavies.camera.capture_session"
-private let SampleBufferQueueLabel = "com.ryandavies.camera.sample_buffer"
+private let SessionQueueLabel = "com.FaceDetection.camera.capture_session"
+private let SampleBufferQueueLabel = "com.FaceDetection.camera.sample_buffer"
 
 protocol CaptureSessionControllerDelegate {
     func captureSessionController(
@@ -45,7 +45,7 @@ class CaptureSessionController: NSObject {
     fileprivate let outputQueue = DispatchQueue(label: SampleBufferQueueLabel, attributes: [])
     
     // Domain name for errors.
-    static let errorDomain = "com.ryandavies.CaptureSessionController.ErrorDomain"
+    static let errorDomain = "com.FaceDetection.CaptureSessionController.ErrorDomain"
     
     // Possible error types.
     enum Error : Swift.Error {
