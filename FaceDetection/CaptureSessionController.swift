@@ -49,13 +49,14 @@ class CaptureSessionController: NSObject {
     
     // Possible error types.
     enum Error : Swift.Error {
+        case noCamera
         case failedToAddInput
         case failedToAddOutput
         case failedToSetVideoOrientation
     }
     
     let device: AVCaptureDevice? = {
-        let devices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo) as! [AVCaptureDevice]
+        let devices = AVCaptureDevice.devices(for: .video)
         var camera: AVCaptureDevice? = nil
         for device in devices {
             if device.position == .front {
@@ -70,13 +71,13 @@ class CaptureSessionController: NSObject {
     
     let captureSession: AVCaptureSession = {
         let session = AVCaptureSession()
-        session.sessionPreset = AVCaptureSessionPresetHigh
+        session.sessionPreset = .high
         return session
     }()
     
     let videoDataOutput: AVCaptureVideoDataOutput = {
         let output = AVCaptureVideoDataOutput()
-        output.videoSettings = [ kCVPixelBufferPixelFormatTypeKey as AnyHashable: Int(kCMPixelFormat_32BGRA) ]
+        output.videoSettings = [ kCVPixelBufferPixelFormatTypeKey as String: Int(kCMPixelFormat_32BGRA) ]
         output.alwaysDiscardsLateVideoFrames = true
         return output
     }()
@@ -126,6 +127,10 @@ class CaptureSessionController: NSObject {
     }
     
     fileprivate func configureCaptureSession() throws {
+        guard let device = device else {
+            throw Error.noCamera
+        }
+        
         // Grab the input for this device.
         let input = try AVCaptureDeviceInput(device: device)
         
@@ -151,7 +156,7 @@ class CaptureSessionController: NSObject {
         captureSession.addOutput(videoDataOutput)
         
         // Assign a device orientation to the video data output.
-        guard let connection = videoDataOutput.connection(withMediaType: AVMediaTypeVideo) else {
+        guard let connection = videoDataOutput.connection(with: .video) else {
             throw Error.failedToSetVideoOrientation
         }
         connection.videoOrientation = AVCaptureVideoOrientation.portrait
@@ -166,9 +171,9 @@ class CaptureSessionController: NSObject {
 
 extension CaptureSessionController : AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(
-        _ captureOutput: AVCaptureOutput!,
-        didOutputSampleBuffer sampleBuffer: CMSampleBuffer!,
-        from connection: AVCaptureConnection!
+        _ captureOutput: AVCaptureOutput,
+        didOutput sampleBuffer: CMSampleBuffer,
+        from connection: AVCaptureConnection
         ) {
             delegate?.captureSessionController(self, didUpdateWithSampleBuffer: sampleBuffer)
     }

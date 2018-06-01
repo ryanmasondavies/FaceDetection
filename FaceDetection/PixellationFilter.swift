@@ -30,7 +30,7 @@ struct PixellationFilter : Filter {
         let inputScale = max(inputImageSize.width, inputImageSize.height) / inputFactor
         return inputImage.applyingFilter(
             "CIPixellate",
-            withInputParameters: [
+            parameters: [
                 kCIInputScaleKey: inputScale,
                 kCIInputCenterKey: inputCenter
             ]
