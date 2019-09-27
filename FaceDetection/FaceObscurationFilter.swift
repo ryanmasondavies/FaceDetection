@@ -66,7 +66,7 @@ class FaceObscurationFilter: Filter {
             circleOptions[kCIInputCenterKey] = CIVector(x: xCenter, y: yCenter)
             
             // Create radial gradient circle at face position with face radius
-            let radialGradient = CIFilter(name: "CIRadialGradient", withInputParameters: circleOptions)
+            let radialGradient = CIFilter(name: "CIRadialGradient", parameters: circleOptions)
             guard let circleImage = radialGradient?.outputImage else {
                 // Something went wrong.
                 // Try the next feature.
@@ -85,7 +85,7 @@ class FaceObscurationFilter: Filter {
             // new circle image and the old so we're creating one image with all
             // of the circles in it.
             let options: [String: AnyObject] = [kCIInputImageKey: circleImage, kCIInputBackgroundImageKey: lastMaskImage]
-            let composition = CIFilter(name: "CISourceOverCompositing", withInputParameters: options)!
+            let composition = CIFilter(name: "CISourceOverCompositing", parameters: options)!
             maskImage = composition.outputImage
         }
         
@@ -99,7 +99,7 @@ class FaceObscurationFilter: Filter {
         blendOptions[kCIInputBackgroundImageKey] = inputImage
         blendOptions[kCIInputMaskImageKey] = maskImage
         
-        guard let blend = CIFilter(name: "CIBlendWithMask", withInputParameters: blendOptions) else {
+        guard let blend = CIFilter(name: "CIBlendWithMask", parameters: blendOptions) else {
             return nil
         }
         
