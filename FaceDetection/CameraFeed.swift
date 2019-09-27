@@ -41,14 +41,7 @@ class CameraFeed: NSObject {
     }
     
     let device: AVCaptureDevice? = {
-        let devices = AVCaptureDevice.devices(for: .video)
-        var camera: AVCaptureDevice? = nil
-        for device in devices {
-            if device.position == .front {
-                camera = device
-            }
-        }
-        return camera
+        return AVCaptureDevice.default(.builtInTrueDepthCamera, for: nil, position: .front)
     }()
     
     var input: AVCaptureDeviceInput? = nil
