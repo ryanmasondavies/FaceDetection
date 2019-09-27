@@ -1,5 +1,5 @@
 //
-//  CaptureSessionController.swift
+//  CameraFeed.swift
 //  FaceDetection
 //
 //  Created by Ryan Davies on 07/01/2016.
@@ -13,29 +13,14 @@ import AVFoundation
 private let SessionQueueLabel = "com.FaceDetection.camera.capture_session"
 private let SampleBufferQueueLabel = "com.FaceDetection.camera.sample_buffer"
 
-protocol CaptureSessionControllerDelegate {
-    func captureSessionController(
-        _ captureSessionController: CaptureSessionController,
-        didStartRunningCaptureSession captureSession: AVCaptureSession
-    )
-    
-    func captureSessionController(
-        _ captureSessionController: CaptureSessionController,
-        didStopRunningCaptureSession captureSession: AVCaptureSession
-    )
-    
-    func captureSessionController(
-        _ captureSessionController: CaptureSessionController,
-        didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer
-    )
-    
-    func captureSessionController(
-        _ captureSessionController: CaptureSessionController,
-        didFailWithError error: Error
-    )
+protocol CameraFeedDelegate {
+    func cameraFeed(_ cameraFeed: CameraFeed, didStartRunningCaptureSession captureSession: AVCaptureSession)
+    func cameraFeed(_ cameraFeed: CameraFeed, didStopRunningCaptureSession captureSession: AVCaptureSession)
+    func cameraFeed(_ cameraFeed: CameraFeed, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer)
+    func cameraFeed(_ cameraFeed: CameraFeed, didFailWithError error: Error)
 }
 
-class CaptureSessionController: NSObject {
+class CameraFeed: NSObject {
     // Use this queue for asynchronous calls to the capture session.
     fileprivate let sessionQueue = DispatchQueue(label: SessionQueueLabel, attributes: [])
     
@@ -45,7 +30,7 @@ class CaptureSessionController: NSObject {
     fileprivate let outputQueue = DispatchQueue(label: SampleBufferQueueLabel, attributes: [])
     
     // Domain name for errors.
-    static let errorDomain = "com.FaceDetection.CaptureSessionController.ErrorDomain"
+    static let errorDomain = "com.FaceDetection.CameraFeed.ErrorDomain"
     
     // Possible error types.
     enum Error : Swift.Error {
@@ -67,7 +52,7 @@ class CaptureSessionController: NSObject {
     }()
     
     var input: AVCaptureDeviceInput? = nil
-    var delegate: CaptureSessionControllerDelegate? = nil
+    var delegate: CameraFeedDelegate? = nil
     
     let captureSession: AVCaptureSession = {
         let session = AVCaptureSession()
@@ -85,8 +70,8 @@ class CaptureSessionController: NSObject {
     fileprivate(set) var isSessionRunning = false {
         didSet {
             switch isSessionRunning {
-            case true: self.delegate?.captureSessionController(self, didStartRunningCaptureSession: captureSession)
-            case false: self.delegate?.captureSessionController(self, didStopRunningCaptureSession: captureSession)
+            case true: self.delegate?.cameraFeed(self, didStartRunningCaptureSession: captureSession)
+            case false: self.delegate?.cameraFeed(self, didStopRunningCaptureSession: captureSession)
             }
         }
     }
@@ -106,7 +91,7 @@ class CaptureSessionController: NSObject {
                     try controller.configureCaptureSession()
                 }
                 catch {
-                    controller.delegate?.captureSessionController(controller, didFailWithError: error)
+                    controller.delegate?.cameraFeed(controller, didFailWithError: error)
                 }
             }
             
@@ -169,12 +154,8 @@ class CaptureSessionController: NSObject {
     }
 }
 
-extension CaptureSessionController : AVCaptureVideoDataOutputSampleBufferDelegate {
-    func captureOutput(
-        _ captureOutput: AVCaptureOutput,
-        didOutput sampleBuffer: CMSampleBuffer,
-        from connection: AVCaptureConnection
-        ) {
-            delegate?.captureSessionController(self, didUpdateWithSampleBuffer: sampleBuffer)
+extension CameraFeed : AVCaptureVideoDataOutputSampleBufferDelegate {
+    func captureOutput(_ captureOutput: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        delegate?.cameraFeed(self, didUpdateWithSampleBuffer: sampleBuffer)
     }
 }

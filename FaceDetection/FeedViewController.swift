@@ -11,8 +11,8 @@ import CoreImage
 import AVFoundation
 
 class FeedViewController: UIViewController {
-    lazy var captureSessionController: CaptureSessionController = {
-        let controller = CaptureSessionController()
+    lazy var cameraFeed: CameraFeed = {
+        let controller = CameraFeed()
         controller.delegate = self
         return controller
     }()
@@ -29,29 +29,29 @@ class FeedViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        captureSessionController.startCaptureSession()
+        cameraFeed.startCaptureSession()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        captureSessionController.stopCaptureSession()
+        cameraFeed.stopCaptureSession()
     }
 }
 
-extension FeedViewController : CaptureSessionControllerDelegate {
-    func captureSessionController(_ captureSessionController: CaptureSessionController, didStartRunningCaptureSession captureSession: AVCaptureSession) {
+extension FeedViewController : CameraFeedDelegate {
+    func cameraFeed(_ cameraFeed: CameraFeed, didStartRunningCaptureSession captureSession: AVCaptureSession) {
         print("Capture session started.")
     }
     
-    func captureSessionController(_ captureSessionController: CaptureSessionController, didStopRunningCaptureSession captureSession: AVCaptureSession) {
+    func cameraFeed(_ cameraFeed: CameraFeed, didStopRunningCaptureSession captureSession: AVCaptureSession) {
         print("Capture session stopped.")
     }
     
-    func captureSessionController(_ captureSessionController: CaptureSessionController, didFailWithError error: Error) {
+    func cameraFeed(_ cameraFeed: CameraFeed, didFailWithError error: Error) {
         print("Failed with error: \(error)")
     }
     
-    func captureSessionController(_ captureSessionController: CaptureSessionController, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer) {
+    func cameraFeed(_ cameraFeed: CameraFeed, didUpdateWithSampleBuffer sampleBuffer: CMSampleBuffer) {
         if let filter = FaceObscurationFilter(CMSampleBuffer: sampleBuffer) {
             DispatchQueue.main.async {
                 let image = filter.outputImage ?? filter.inputImage

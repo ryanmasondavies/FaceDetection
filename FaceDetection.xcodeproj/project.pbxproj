@@ -15,7 +15,7 @@
 		944D02EE19B5E52100324B81 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 944D02ED19B5E52100324B81 /* Images.xcassets */; };
 		944D02FA19B5E52100324B81 /* FaceDetectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944D02F919B5E52100324B81 /* FaceDetectionTests.swift */; };
 		946291ED233EAB540061238B /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 946291EC233EAB540061238B /* Launch.storyboard */; };
-		94F494FA1C3DE3D8008D88DF /* CaptureSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F494F91C3DE3D8008D88DF /* CaptureSessionController.swift */; };
+		94F494FA1C3DE3D8008D88DF /* CameraFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F494F91C3DE3D8008D88DF /* CameraFeed.swift */; };
 		94F494FC1C3DE41A008D88DF /* FaceObscurationFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F494FB1C3DE41A008D88DF /* FaceObscurationFilter.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +43,7 @@
 		944D02F919B5E52100324B81 /* FaceDetectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionTests.swift; sourceTree = "<group>"; };
 		946291EC233EAB540061238B /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		94C9E1F91CA72A3300B49860 /* PixellateImage.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PixellateImage.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		94F494F91C3DE3D8008D88DF /* CaptureSessionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureSessionController.swift; sourceTree = "<group>"; };
+		94F494F91C3DE3D8008D88DF /* CameraFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFeed.swift; sourceTree = "<group>"; };
 		94F494FB1C3DE41A008D88DF /* FaceObscurationFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceObscurationFilter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,7 +89,7 @@
 			children = (
 				944D02E619B5E52100324B81 /* AppDelegate.swift */,
 				944D02E819B5E52100324B81 /* FeedViewController.swift */,
-				94F494F91C3DE3D8008D88DF /* CaptureSessionController.swift */,
+				94F494F91C3DE3D8008D88DF /* CameraFeed.swift */,
 				9425E0AD1CA88FBF004B49BB /* CoreImageAdditions.swift */,
 				9425E0AF1CA8908B004B49BB /* PixellationFilter.swift */,
 				94F494FB1C3DE41A008D88DF /* FaceObscurationFilter.swift */,
@@ -237,7 +237,7 @@
 				944D02E919B5E52100324B81 /* FeedViewController.swift in Sources */,
 				944D02E719B5E52100324B81 /* AppDelegate.swift in Sources */,
 				9425E0AE1CA88FBF004B49BB /* CoreImageAdditions.swift in Sources */,
-				94F494FA1C3DE3D8008D88DF /* CaptureSessionController.swift in Sources */,
+				94F494FA1C3DE3D8008D88DF /* CameraFeed.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
