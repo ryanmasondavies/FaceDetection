@@ -14,6 +14,7 @@
 		944D02EC19B5E52100324B81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 944D02EA19B5E52100324B81 /* Main.storyboard */; };
 		944D02EE19B5E52100324B81 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 944D02ED19B5E52100324B81 /* Images.xcassets */; };
 		944D02FA19B5E52100324B81 /* FaceDetectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944D02F919B5E52100324B81 /* FaceDetectionTests.swift */; };
+		946291ED233EAB540061238B /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 946291EC233EAB540061238B /* Launch.storyboard */; };
 		94F494FA1C3DE3D8008D88DF /* CaptureSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F494F91C3DE3D8008D88DF /* CaptureSessionController.swift */; };
 		94F494FC1C3DE41A008D88DF /* FaceObscurationFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F494FB1C3DE41A008D88DF /* FaceObscurationFilter.swift */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,7 @@
 		944D02F319B5E52100324B81 /* FaceDetectionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FaceDetectionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		944D02F819B5E52100324B81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		944D02F919B5E52100324B81 /* FaceDetectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionTests.swift; sourceTree = "<group>"; };
+		946291EC233EAB540061238B /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		94C9E1F91CA72A3300B49860 /* PixellateImage.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PixellateImage.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		94F494F91C3DE3D8008D88DF /* CaptureSessionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureSessionController.swift; sourceTree = "<group>"; };
 		94F494FB1C3DE41A008D88DF /* FaceObscurationFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceObscurationFilter.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				9425E0AF1CA8908B004B49BB /* PixellationFilter.swift */,
 				94F494FB1C3DE41A008D88DF /* FaceObscurationFilter.swift */,
 				944D02EA19B5E52100324B81 /* Main.storyboard */,
+				946291EC233EAB540061238B /* Launch.storyboard */,
 				944D02ED19B5E52100324B81 /* Images.xcassets */,
 				944D02E419B5E52100324B81 /* Supporting Files */,
 			);
@@ -211,6 +214,7 @@
 			files = (
 				944D02EC19B5E52100324B81 /* Main.storyboard in Resources */,
 				944D02EE19B5E52100324B81 /* Images.xcassets in Resources */,
+				946291ED233EAB540061238B /* Launch.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,7 +378,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 9XFB83Z8C6;
 				INFOPLIST_FILE = FaceDetection/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -389,7 +392,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 9XFB83Z8C6;
 				INFOPLIST_FILE = FaceDetection/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
