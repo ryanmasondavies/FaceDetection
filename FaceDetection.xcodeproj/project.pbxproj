@@ -40,7 +40,7 @@
 		944D02F319B5E52100324B81 /* FaceDetectionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FaceDetectionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		944D02F819B5E52100324B81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		944D02F919B5E52100324B81 /* FaceDetectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionTests.swift; sourceTree = "<group>"; };
-		94C9E1F91CA72A3300B49860 /* PixellateImage.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PixellateImage.playground; sourceTree = "<group>"; };
+		94C9E1F91CA72A3300B49860 /* PixellateImage.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PixellateImage.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		94F494F91C3DE3D8008D88DF /* CaptureSessionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureSessionController.swift; sourceTree = "<group>"; };
 		94F494FB1C3DE41A008D88DF /* FaceObscurationFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceObscurationFilter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
