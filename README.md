@@ -5,6 +5,8 @@ Face Detection
 
 _Note: this example requires Xcode 11 and iOS 13 or later._
 
+In progress: currently this project uses `CIDetector` to identify faces. I am working on updating the project to use the Vision framework, and to use SwiftUI and Combine.
+
 Sample project for detecting faces from a live camera feed using Swift and Core Image API's.
 
 Apple documentation for face detection is available [here](https://developer.apple.com/library/ios/documentation/graphicsimaging/Conceptual/CoreImaging/ci_detect_faces/ci_detect_faces.html) for Objective-C. This project migrates the code to Swift and integrates it with a live camera feed.
